@@ -7,7 +7,8 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    source: { content: "" }
   },
   //事件处理函数
   bindViewTap: function() {
@@ -38,6 +39,17 @@ Page({
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
+          })
+        }
+      })
+    }
+
+    if(!this.data.source.content) {
+      var that = this;
+      wx.getClipboardData({
+        success: function (res) {
+          that.setData({
+            source: { content: res.data}
           })
         }
       })
