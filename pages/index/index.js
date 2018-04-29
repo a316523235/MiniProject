@@ -48,9 +48,24 @@ Page({
       var that = this;
       wx.getClipboardData({
         success: function (res) {
-          that.setData({
-            source: { content: res.data}
-          })
+          var sourceData = res.data
+          if(sourceData) {
+            wx.request({
+              url:'https://www.booyu.cn/api/tkl',
+              data: { content: sourceData },
+              method: 'POST',
+              dataType: 'json',
+              success: function (res) {
+                console.log(res.data)
+                that.setData({
+                  source: { content: res.data.content || res.data.msg}
+                })
+              }
+            })
+          }
+          //that.setData({
+          //  source: { content: res.data}
+          //})
         }
       })
     }
