@@ -21,6 +21,18 @@
   padding: 30px;
 }
 
-.btn-copy {
-  margin-top: 20px;
+button{
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
+.btn-view {
+  text-align: center;
+  padding-right: 5%;
+}
+.button-sp-area{
+  margin: 0 auto;
+  width: 60%;
+}
+.mini-btn-1{
+  margin-right: 30rpx;
 }

@@ -12,6 +12,9 @@
   </view>-->
   <view class="usermotto">
     <text class="user-motto">{{source.content}}</text>
-    <button wx:if="{{couponInfo}}" class='btn-copy' bindtap="copyCouponInfo"> 复制优惠信息 </button>
+    <view wx:if="{{couponInfo}}" class='btn-view'>
+      <button class="mini-btn mini-btn-1" type="default" size="mini" bindtap="copyCouponInfo"> 复制 </button>
+      <button class="mini-btn" type="default" size="mini" open-type="share"> 分享 </button>
+    </view>
   </view>
 </view>
