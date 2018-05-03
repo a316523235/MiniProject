@@ -70,9 +70,9 @@ Page({
       wx.getClipboardData({
         success: function (res) {
           var sourceData = res.data
-          if(!sourceData) {
-            return;
-          }
+          //if(!sourceData) {
+          //  return;
+          //}
           if (that.data.sourceContent == sourceData)
           {
             return;
