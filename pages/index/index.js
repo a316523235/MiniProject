@@ -8,7 +8,7 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    source: { content: "" },
+    source: { content: "请先复制淘口令" },
     sourceContent: '',
     task: null,
     couponInfo: ''
@@ -48,12 +48,16 @@ Page({
       })
     }
 
-    this.getTbk();
-    var that = this;
-    if(!this.data.task) {
+    //this.getTbk();
+    //var that = this;
+    //if(!this.data.task) {
       //console.log(this.data.task)
-      this.setData({ task: setInterval(function () { that.getTbk(); }, 1500) })
-    }
+      //this.setData({ task: setInterval(function () { that.getTbk(); }, 1500) })
+    //}
+  },
+  onShow: function() {
+    //console.log('触发')
+    this.getTbk()
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -120,7 +124,7 @@ Page({
   isFromTaobaoContent: function(content) {
     var result = { status: false, msg: "" }
     if(!content) {
-      result.msg = '请先复制淘口令'
+      //result.msg = '请先复制淘口令'
       return result
     }
     if (!content.includes('￥')) {
