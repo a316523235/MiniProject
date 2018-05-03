@@ -8,7 +8,10 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    source: { content: "" }
+    source: { content: "" },
+    sourceContent: '',
+    task: null,
+    couponInfo: ''
   },
   //事件处理函数
   bindViewTap: function() {
@@ -17,6 +20,7 @@ Page({
     })
   },
   onLoad: function () {
+    //console.log("index.js触发")
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -44,30 +48,11 @@ Page({
       })
     }
 
-    if(!this.data.source.content) {
-      var that = this;
-      wx.getClipboardData({
-        success: function (res) {
-          var sourceData = res.data
-          if(sourceData) {
-            wx.request({
-              url:'https://www.booyu.cn/api/tkl',
-              data: { content: sourceData },
-              method: 'POST',
-              dataType: 'json',
-              success: function (res) {
-                console.log(res.data)
-                that.setData({
-                  source: { content: res.data.content || res.data.msg}
-                })
-              }
-            })
-          }
-          //that.setData({
-          //  source: { content: res.data}
-          //})
-        }
-      })
+    this.getTbk();
+    var that = this;
+    if(!this.data.task) {
+      //console.log(this.data.task)
+      this.setData({ task: setInterval(function () { that.getTbk(); }, 1500) })
     }
   },
   getUserInfo: function(e) {
@@ -77,5 +62,84 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  getTbk: function() {
+    //if (!this.data.source.content) {
+    if (true) {
+      var that = this;
+      wx.getClipboardData({
+        success: function (res) {
+          var sourceData = res.data
+          if(!sourceData) {
+            return;
+          }
+          if (that.data.sourceContent == sourceData)
+          {
+            return;
+          }
+          that.setData({ sourceContent: sourceData});
+
+          var checkResult = that.isFromTaobaoContent(sourceData)
+          //console.log(checkResult);
+          if (!checkResult.status) {
+            if (checkResult.msg) {
+              that.setData({
+                source: { content: checkResult.msg },
+                couponInfo: ''
+              })
+            }
+            return;
+          }
+
+          //wx.setClipboardData({ data: '' });
+
+          //console.log("进来了")
+          wx.request({
+            url: 'https://www.booyu.cn/api/tkl',
+            data: { content: sourceData },
+            method: 'POST',
+            dataType: 'json',
+            success: function (res) {
+              if(res.data.status) {
+                that.setData({ couponInfo: res.data.content});
+              }
+              //console.log(res.data)
+              that.setData({
+                source: { content: res.data.content || res.data.msg }
+              })
+            }
+          })
+
+          //that.setData({
+          //  source: { content: res.data}
+          //})
+        }
+      })
+    }
+  },
+  isFromTaobaoContent: function(content) {
+    var result = { status: false, msg: "" }
+    if(!content) {
+      result.msg = '请先复制淘口令'
+      return result
+    }
+    if (!content.includes('￥')) {
+      result.msg = '请先复制淘口令'
+      return result
+    }
+    if (content.split('￥').length < 3) {
+      result.msg = '请先复制淘口令'
+      return result
+    }
+    if(content.includes('【现售价】')) {
+      return false
+    }
+    result.status = true
+    return result
+  },
+  copyCouponInfo: function() {
+    //console.log('copy');
+    var that = this;
+    wx.setClipboardData({ data: that.data.couponInfo });
   }
 })

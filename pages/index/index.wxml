@@ -12,5 +12,6 @@
   </view>-->
   <view class="usermotto">
     <text class="user-motto">{{source.content}}</text>
+    <button wx:if="{{couponInfo}}" class='btn-copy' bindtap="copyCouponInfo"> 复制优惠信息 </button>
   </view>
 </view>
