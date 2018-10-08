@@ -1,15 +1,21 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
+  <!-- <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
-  </view>
+  </view> -->
   <!--<view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>-->
+  <view wx:if="{{products.result}}" class="pro">
+    <view wx:for="{{products.result}}" wx:key="idx">
+      <text>{{item.Title}}</text>
+      <!-- <image src="{{item.Pic}}"></image> -->
+    </view>
+  </view>
   <view class="usermotto">
     <text class="user-motto">{{source.content}}</text>
     <view wx:if="{{couponInfo}}" class='btn-view'>
